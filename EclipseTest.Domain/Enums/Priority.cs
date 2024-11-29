@@ -1,4 +1,4 @@
-﻿namespace EclipseTest.Infrastructure.Enums;
+﻿namespace EclipseTest.Domain.Enums;
 
 public enum Priority
 {

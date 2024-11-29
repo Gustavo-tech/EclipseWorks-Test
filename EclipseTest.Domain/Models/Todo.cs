@@ -1,8 +1,8 @@
-﻿using EclipseTest.Infrastructure.Enums;
+﻿using EclipseTest.Domain.Enums;
 
-namespace EclipseTest.Infrastructure.Models;
+namespace EclipseTest.Domain.Models;
 
-public class Task
+public class Todo
 {
     public uint Id { get; set; }
     public string Title { get; set; }
@@ -11,7 +11,7 @@ public class Task
     public Priority Priority { get; private set; }
     public User CreatedBy { get; private set; }
 
-    public Task(string title, string description, DateTime dueDate, Priority priority, User createdBy)
+    public Todo(string title, string description, DateTime dueDate, User createdBy, Priority priority = Priority.Low)
     {
         Title = title ?? throw new ArgumentNullException(nameof(title));
         Description = description ?? throw new ArgumentNullException(nameof(description));

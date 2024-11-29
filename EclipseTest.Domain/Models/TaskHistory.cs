@@ -1,4 +1,4 @@
-﻿namespace EclipseTest.Infrastructure.Models;
+﻿namespace EclipseTest.Domain.Models;
 
 public class TaskHistory
 {
