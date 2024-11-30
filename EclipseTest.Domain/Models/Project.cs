@@ -2,9 +2,8 @@
 
 namespace EclipseTest.Domain.Models;
 
-public class Project
+public class Project : BaseEntity
 {
-    public uint Id { get; set; }
     public string Title { get; set; }
     public User CreatedBy { get; set; }
     public List<Todo> Tasks { get; private set; } = new();

@@ -2,9 +2,8 @@
 
 namespace EclipseTest.Domain.Models;
 
-public class User
+public class User : BaseEntity
 {
-    public uint Id { get; set; }
     public string Name { get; set; }
     public UserRole Role { get; set; }
 

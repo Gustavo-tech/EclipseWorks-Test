@@ -2,7 +2,7 @@
 
 namespace EclipseTest.Domain.Models;
 
-public class Todo
+public class Todo : BaseEntity
 {
     private string? _title;
     private string? _description;

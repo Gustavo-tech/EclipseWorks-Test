@@ -1,8 +1,7 @@
 ﻿namespace EclipseTest.Domain.Models;
 
-public class TodoHistory
+public class TodoHistory : BaseEntity
 {
-    public uint Id { get; set; }
     public uint TaskId { get; set; }
     public List<string> Changes { get; private set; } = new();
     public DateTime Time { get; private set; }
