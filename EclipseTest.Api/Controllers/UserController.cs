@@ -1,4 +1,4 @@
-﻿using EclipseTest.Api.Dto.User;
+﻿using EclipseTest.Application.Dto.User;
 using EclipseTest.Application.Services.Interfaces;
 using EclipseTest.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +19,10 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDto userDto)
     {
-        User user = new User(userDto.Name, userDto.Role);
-
         try
         {
-            user = await _userService.CreateUserAsync(user);
-            return Ok(user);
+            User user = await _userService.CreateUserAsync(userDto);
+            return StatusCode(201, user);
         }
         catch (ArgumentException ex)
         {

@@ -1,9 +1,10 @@
-﻿using EclipseTest.Domain.Models;
+﻿using EclipseTest.Application.Dto.Project;
+using EclipseTest.Domain.Models;
 
 namespace EclipseTest.Application.Services.Interfaces;
 public interface IProjectService
 {
-    Task CreateProjectAsync(Project projectToBeCreated);
+    Task CreateProjectAsync(CreateProjectDto projectToBeCreated);
     Task<IEnumerable<Todo>> GetAllProjectTodosAsync(int projectId);
     Task<IEnumerable<Project>> GetUserProjectsAsync(int userId);
 }

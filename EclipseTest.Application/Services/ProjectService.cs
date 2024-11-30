@@ -1,4 +1,5 @@
-﻿using EclipseTest.Application.Services.Interfaces;
+﻿using EclipseTest.Application.Dto.Project;
+using EclipseTest.Application.Services.Interfaces;
 using EclipseTest.Domain.Models;
 using EclipseTest.Infrastructure.Interfaces;
 
@@ -7,10 +8,12 @@ namespace EclipseTest.Application.Services;
 public class ProjectService : IProjectService
 {
     private readonly IRepository<Project> _projectRepository;
+    private readonly IRepository<User> _userRepository;
 
-    public ProjectService(IRepository<Project> projectRepository)
+    public ProjectService(IRepository<Project> projectRepository, IRepository<User> userRepository)
     {
         _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
+        _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
     }
 
     public async Task<IEnumerable<Project>> GetUserProjectsAsync(int userId)
@@ -23,18 +26,23 @@ public class ProjectService : IProjectService
         Project? project = await _projectRepository.FindAsync(x => x.Id == projectId);
 
         if (project == null)
-            throw new ArgumentNullException(nameof(projectId), "Project wasn't found on database");
+            throw new ArgumentNullException("Project wasn't found on database");
 
         return project.Tasks;
     }
 
-    public async Task CreateProjectAsync(Project projectToBeCreated)
+    public async Task CreateProjectAsync(CreateProjectDto projectToBeCreated)
     {
         Project? project = await _projectRepository.FindAsync(x => x.Title == projectToBeCreated.Title && x.CreatedBy.Id == x.CreatedBy.Id);
 
         if (project != null)
-            throw new ArgumentException(nameof(projectToBeCreated), "This project is already created!");
+            throw new ArgumentException("This project is already created!");
 
-        await _projectRepository.AddAsync(projectToBeCreated);
+        User user = await _userRepository.FindAsync(x => x.Id == projectToBeCreated.UserId);
+        if (user == null)
+            throw new ArgumentException("User not found!");
+
+        project = new(projectToBeCreated.Title, user);
+        await _projectRepository.AddAsync(project);
     }
 }

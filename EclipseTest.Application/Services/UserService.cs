@@ -1,4 +1,5 @@
-﻿using EclipseTest.Application.Services.Interfaces;
+﻿using EclipseTest.Application.Dto.User;
+using EclipseTest.Application.Services.Interfaces;
 using EclipseTest.Domain.Models;
 using EclipseTest.Infrastructure.Interfaces;
 
@@ -13,14 +14,15 @@ public class UserService : IUserService
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task<User> CreateUserAsync(User user)
+    public async Task<User> CreateUserAsync(CreateUserDto dto)
     {
-        User userOnDatabase = await _repository.FindAsync(x => x.Name == user.Name);
+        User userOnDatabase = await _repository.FindAsync(x => x.Name == dto.Name);
 
         if (userOnDatabase != null)
             throw new ArgumentException("This user already exists!");
 
+        User user = new(dto.Name, dto.Role);
         await _repository.AddAsync(user);
-        return await _repository.FindAsync(x => x.Name == user.Name);
+        return await _repository.FindAsync(x => x.Name == dto.Name);
     }
 }
