@@ -1,4 +1,6 @@
-﻿namespace EclipseTest.Domain.Models;
+﻿using EclipseTest.Domain.Enums;
+
+namespace EclipseTest.Domain.Models;
 
 public class Project
 {
@@ -24,5 +26,13 @@ public class Project
             throw new Exception("This project achieved the maximum number of tasks");
 
         Tasks.Add(task);
+    }
+
+    public double GenerateAverageForCompletedTodos(int daysToConsider = 30)
+    {
+        double allCompletedWithinTime = Tasks.Where(x => x.CompletedDate >= DateTime.Now.AddDays(daysToConsider * -1) && x.Status == TodoStatus.Done)
+            .Count();
+
+        return allCompletedWithinTime / Tasks.Count;
     }
 }

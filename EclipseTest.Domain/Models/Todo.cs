@@ -6,11 +6,12 @@ public class Todo
 {
     private string? _title;
     private string? _description;
+    private TodoStatus _status;
 
     public uint Id { get; set; }
     public DateTime DueDate { get; set; }
+    public DateTime? CompletedDate { get; private set; }
     public Priority Priority { get; private set; }
-    public TodoStatus Status { get; private set; }
     public User CreatedBy { get; private set; }
     public List<TodoHistory> History { get; private set; } = new();
 
@@ -35,6 +36,17 @@ public class Todo
                 throw new ArgumentNullException(nameof(value));
 
             _description = value;
+        }
+    }
+    public TodoStatus Status
+    {
+        get { return _status; }
+        private set
+        {
+            if (value == TodoStatus.Done)
+                CompletedDate = DateTime.Now;
+
+            _status = value;
         }
     }
 
@@ -73,24 +85,28 @@ public class Todo
         if (title != Title)
         {
             taskHistory.Changes.Add($"Title field changed from {Title} to {title}");
+            Title = title;
             hasChanges = true;
         }
 
         if (description != Description)
         {
             taskHistory.Changes.Add($"Description field changed from {Description} to {description}");
+            Description = description;
             hasChanges = true;
         }
 
         if (status != Status)
         {
             taskHistory.Changes.Add($"Status field changed from {Status} to {status}");
+            Status = status;
             hasChanges = true;
         }
 
         if (dueDate != DueDate)
         {
             taskHistory.Changes.Add($"Due date field changed from {DueDate} to {dueDate}");
+            DueDate = dueDate;
             hasChanges = true;
         }
 
