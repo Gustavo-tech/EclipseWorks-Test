@@ -8,7 +8,7 @@ public class Todo : BaseEntity
     private string? _description;
     private TodoStatus _status;
 
-    public uint Id { get; set; }
+    public uint ProjectId { get; set; }
     public DateTime DueDate { get; set; }
     public DateTime? CompletedDate { get; private set; }
     public Priority Priority { get; private set; }
@@ -48,6 +48,10 @@ public class Todo : BaseEntity
 
             _status = value;
         }
+    }
+
+    public Todo()
+    {
     }
 
     public Todo(

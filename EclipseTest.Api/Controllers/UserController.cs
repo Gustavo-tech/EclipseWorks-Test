@@ -26,7 +26,7 @@ public class UserController : ControllerBase
             user = await _userService.CreateUserAsync(user);
             return Ok(user);
         }
-        catch (ArgumentNullException ex)
+        catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
         }

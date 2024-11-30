@@ -10,6 +10,10 @@ public class Project : BaseEntity
 
     public bool IsEmpty => Tasks.Count == 0;
 
+    public Project()
+    {
+    }
+
     public Project(string title, User createdBy)
     {
         CreatedBy = createdBy ?? throw new ArgumentNullException(nameof(createdBy));

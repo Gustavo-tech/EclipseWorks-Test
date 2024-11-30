@@ -7,6 +7,10 @@ public class TodoHistory : BaseEntity
     public DateTime Time { get; private set; }
     public User ChangedBy { get; set; }
 
+    public TodoHistory()
+    {
+    }
+
     public TodoHistory(User changedBy)
     {
         ChangedBy = changedBy;
