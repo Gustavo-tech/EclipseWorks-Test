@@ -72,25 +72,25 @@ public class Todo
 
         if (title != Title)
         {
-            taskHistory.Changes.Add($"Title changed from {Title} to {title}");
+            taskHistory.Changes.Add($"Title field changed from {Title} to {title}");
             hasChanges = true;
         }
 
         if (description != Description)
         {
-            taskHistory.Changes.Add($"Description changed from {Description} to {description}");
+            taskHistory.Changes.Add($"Description field changed from {Description} to {description}");
             hasChanges = true;
         }
 
         if (status != Status)
         {
-            taskHistory.Changes.Add($"Status changed from {Status} to {status}");
+            taskHistory.Changes.Add($"Status field changed from {Status} to {status}");
             hasChanges = true;
         }
 
         if (dueDate != DueDate)
         {
-            taskHistory.Changes.Add($"Due date changed from {DueDate} to {dueDate}");
+            taskHistory.Changes.Add($"Due date field changed from {DueDate} to {dueDate}");
             hasChanges = true;
         }
 
