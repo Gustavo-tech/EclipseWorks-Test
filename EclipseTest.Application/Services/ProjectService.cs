@@ -48,4 +48,11 @@ public class ProjectService : IProjectService
 
         await _projectRepository.DeleteAsync(project);
     }
+
+    public async Task<double> GenerateProjectReportAsync(int projectId)
+    {
+        Project project = await _projectRepository.FindAsync(x => x.Id == projectId);
+
+        return project is null ? throw new ArgumentException("Project not found on database") : project.GenerateAverageForCompletedTodos(30);
+    }
 }

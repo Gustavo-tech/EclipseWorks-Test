@@ -33,6 +33,9 @@ public class Project : BaseEntity
 
     public double GenerateAverageForCompletedTodos(int daysToConsider = 30)
     {
+        if (IsEmpty)
+            throw new ArgumentException("Can't generate report because this project doesn't have any tasks");
+
         double allCompletedWithinTime = Tasks.Where(x => x.CompletedDate >= DateTime.Now.AddDays(daysToConsider * -1) && x.Status == TodoStatus.Done)
             .Count();
 

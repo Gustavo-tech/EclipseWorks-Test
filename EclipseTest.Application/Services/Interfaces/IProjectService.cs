@@ -6,5 +6,6 @@ public interface IProjectService
 {
     Task CreateProjectAsync(CreateProjectDto projectToBeCreated);
     Task<IEnumerable<Project>> GetUserProjectsAsync(int userId);
+    Task<double> GenerateProjectReportAsync(int projectId);
     Task DeleteProjectAsync(int projectId);
 }

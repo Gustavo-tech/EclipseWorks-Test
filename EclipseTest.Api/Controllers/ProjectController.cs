@@ -40,10 +40,35 @@ public class ProjectController : ControllerBase
 
             return Ok(projects);
 		}
-		catch (Exception)
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
 		{
             return StatusCode(500);
 		}
+    }
+
+    [HttpGet("get-report/{id}")]
+    public async Task<IActionResult> GetProjectReportAsync([FromRoute] int? id)
+    {
+        if (id == null)
+            return BadRequest("Specify a user to get the projects");
+
+        try
+        {
+            double average = await _service.GenerateProjectReportAsync(id.Value);
+            return Ok($"The average of tasks done for this project in the last 30 days is {average}");
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500);
+        }
     }
 
     [HttpPost]
