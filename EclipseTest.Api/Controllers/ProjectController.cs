@@ -1,5 +1,4 @@
 ﻿using EclipseTest.Application.Dto.Project;
-using EclipseTest.Application.Dto.Todo;
 using EclipseTest.Application.Services.Interfaces;
 using EclipseTest.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +24,20 @@ public class ProjectController : ControllerBase
 
 		try
 		{
-            IEnumerable<Project> projects = await _service.GetUserProjectsAsync(userId.Value);
+            List<dynamic> projects = new();
+            IEnumerable<Project> projectsInDatabase = await _service.GetUserProjectsAsync(userId.Value);
+
+            foreach (Project project in projectsInDatabase)
+            {
+                projects.Add(new
+                {
+                    project.Id,
+                    project.Title,
+                    project.CreatedBy,
+                    project.IsEmpty
+                });
+            }
+
             return Ok(projects);
 		}
 		catch (Exception)
@@ -34,67 +46,13 @@ public class ProjectController : ControllerBase
 		}
     }
 
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> CreateProjectAsync([FromBody] CreateProjectDto dto)
     {
         try
         {
             await _service.CreateProjectAsync(dto);
             return StatusCode(201);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception)
-        {
-            return StatusCode(500);
-        }
-    }
-
-    [HttpPost("insert-todo")]
-    public async Task<IActionResult> CreateTodoAsync([FromBody] CreateTodoDto dto)
-    {
-        try
-        {
-            await _service.AddTodoToProjectAsync(dto);
-            return StatusCode(201);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception)
-        {
-            return StatusCode(500);
-        }
-    }
-
-    [HttpPut("update-todo")]
-    public async Task<IActionResult> UpdateTodoAsync([FromBody] UpdateTodoDto dto)
-    {
-        try
-        {
-            await _service.UpdateTodoFromProjectAsync(dto);
-            return Ok();
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception)
-        {
-            return StatusCode(500);
-        }
-    }
-
-    [HttpDelete("delete-todo/{id}")]
-    public async Task<IActionResult> DeleteTodoAsync([FromRoute] int id)
-    {
-        try
-        {
-            await _service.RemoveTodoFromProjectAsync(id);
-            return Ok();
         }
         catch (ArgumentException ex)
         {
