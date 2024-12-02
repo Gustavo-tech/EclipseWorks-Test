@@ -47,6 +47,9 @@ public class ApplicationContext : DbContext
 
             x.Navigation(x => x.History)
                 .AutoInclude();
+
+            x.Navigation(x => x.CreatedBy)
+                .AutoInclude();
         });
 
         modelBuilder.Entity<TodoHistory>(x =>

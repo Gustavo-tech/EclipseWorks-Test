@@ -1,4 +1,5 @@
 ﻿using EclipseTest.Application.Dto.Project;
+using EclipseTest.Application.Dto.Todo;
 using EclipseTest.Application.Services.Interfaces;
 using EclipseTest.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -33,12 +34,30 @@ public class ProjectController : ControllerBase
 		}
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> CreateProjectAsync([FromBody] CreateProjectDto dto)
     {
         try
         {
             await _service.CreateProjectAsync(dto);
+            return StatusCode(201);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500);
+        }
+    }
+
+    [HttpPost("insert-task")]
+    public async Task<IActionResult> CreateTodoAsync([FromBody] CreateTodoDto dto)
+    {
+        try
+        {
+            await _service.AddTodoToProjectAsync(dto);
             return StatusCode(201);
         }
         catch (ArgumentException ex)

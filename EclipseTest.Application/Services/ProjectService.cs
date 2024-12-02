@@ -1,4 +1,5 @@
 ﻿using EclipseTest.Application.Dto.Project;
+using EclipseTest.Application.Dto.Todo;
 using EclipseTest.Application.Services.Interfaces;
 using EclipseTest.Domain.Models;
 using EclipseTest.Infrastructure.Interfaces;
@@ -44,5 +45,16 @@ public class ProjectService : IProjectService
 
         project = new(projectToBeCreated.Title, user);
         await _projectRepository.AddAsync(project);
+    }
+
+    public async Task AddTodoToProjectAsync(CreateTodoDto dto)
+    {
+        Project project = await _projectRepository.FindAsync(x => x.CreatedBy.Id == dto.UserId && x.Id == dto.ProjectId);
+        User user = await _userRepository.FindAsync(x => x.Id == dto.UserId);
+
+        Todo newTodo = new(dto.Title, dto.Description, dto.DueDate, user, dto.Priority, dto.Status);
+        project.AddTask(newTodo);
+
+        await _projectRepository.UpdateAsync(project);
     }
 }

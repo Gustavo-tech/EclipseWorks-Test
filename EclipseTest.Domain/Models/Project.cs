@@ -26,7 +26,7 @@ public class Project : BaseEntity
             throw new ArgumentNullException(nameof(task));
 
         if (Tasks.Count >= 20)
-            throw new Exception("This project achieved the maximum number of tasks");
+            throw new ArgumentException("This project achieved the maximum number of tasks");
 
         Tasks.Add(task);
     }
