@@ -10,11 +10,13 @@ public class ProjectService : IProjectService
 {
     private readonly IRepository<Project> _projectRepository;
     private readonly IRepository<User> _userRepository;
+    private readonly IRepository<Todo> _todoRepository;
 
-    public ProjectService(IRepository<Project> projectRepository, IRepository<User> userRepository)
+    public ProjectService(IRepository<Project> projectRepository, IRepository<User> userRepository, IRepository<Todo> todoRepository)
     {
         _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+        _todoRepository = todoRepository ?? throw new ArgumentNullException(nameof(todoRepository));
     }
 
     public async Task<IEnumerable<Project>> GetUserProjectsAsync(int userId)
@@ -56,5 +58,27 @@ public class ProjectService : IProjectService
         project.AddTask(newTodo);
 
         await _projectRepository.UpdateAsync(project);
+    }
+
+    public async Task UpdateTodoFromProjectAsync(UpdateTodoDto dto)
+    {
+        Todo todo = await _todoRepository.FindAsync(x => x.Id == dto.Id);
+        User user = await _userRepository.FindAsync(x => x.Id == dto.UserId);
+
+        if (todo is null)
+            throw new ArgumentException("This todo wasn't found on database");
+
+        if (user is null)
+            throw new ArgumentException("This user wasn't found on database");
+
+        todo.Update(dto.Title, dto.Description, dto.Status, dto.DueDate, user);
+
+        await _todoRepository.UpdateAsync(todo);
+    }
+
+    public async Task RemoveTodoFromProjectAsync(DeleteTodoDto dto)
+    {
+        Todo todoToRemove = await _todoRepository.FindAsync(x => x.Id == dto.Id) ?? throw new ArgumentException("This todo wasn't found on database");
+        await _todoRepository.DeleteAsync(todoToRemove);
     }
 }

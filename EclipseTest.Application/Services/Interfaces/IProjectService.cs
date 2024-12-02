@@ -9,4 +9,6 @@ public interface IProjectService
     Task<IEnumerable<Todo>> GetAllProjectTodosAsync(int projectId);
     Task<IEnumerable<Project>> GetUserProjectsAsync(int userId);
     Task AddTodoToProjectAsync(CreateTodoDto dto);
+    Task UpdateTodoFromProjectAsync(UpdateTodoDto dto);
+    Task RemoveTodoFromProjectAsync(DeleteTodoDto dto);
 }
