@@ -76,9 +76,22 @@ public class ProjectService : IProjectService
         await _todoRepository.UpdateAsync(todo);
     }
 
-    public async Task RemoveTodoFromProjectAsync(DeleteTodoDto dto)
+    public async Task RemoveTodoFromProjectAsync(int id)
     {
-        Todo todoToRemove = await _todoRepository.FindAsync(x => x.Id == dto.Id) ?? throw new ArgumentException("This todo wasn't found on database");
+        Todo todoToRemove = await _todoRepository.FindAsync(x => x.Id == id) ?? throw new ArgumentException("This todo wasn't found on database");
         await _todoRepository.DeleteAsync(todoToRemove);
+    }
+
+    public async Task DeleteProjectAsync(int projectId)
+    {
+        Project project = await _projectRepository.FindAsync(x => x.Id == projectId);
+
+        if (project is null)
+            throw new ArgumentException("Project not found on database");
+
+        if (!project.IsEmpty)
+            throw new ArgumentException("Project is not empty, please delete all tasks related to this project first");
+
+        await _projectRepository.DeleteAsync(project);
     }
 }

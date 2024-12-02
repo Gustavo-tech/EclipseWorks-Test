@@ -88,12 +88,30 @@ public class ProjectController : ControllerBase
         }
     }
 
-    [HttpDelete("delete-todo")]
-    public async Task<IActionResult> DeleteTodoAsync([FromBody] DeleteTodoDto dto)
+    [HttpDelete("delete-todo/{id}")]
+    public async Task<IActionResult> DeleteTodoAsync([FromRoute] int id)
     {
         try
         {
-            await _service.RemoveTodoFromProjectAsync(dto);
+            await _service.RemoveTodoFromProjectAsync(id);
+            return Ok();
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500);
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProjectAsync([FromRoute] int id)
+    {
+        try
+        {
+            await _service.DeleteProjectAsync(id);
             return Ok();
         }
         catch (ArgumentException ex)
