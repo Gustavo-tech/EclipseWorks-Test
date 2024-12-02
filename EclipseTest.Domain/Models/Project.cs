@@ -39,6 +39,6 @@ public class Project : BaseEntity
         double allCompletedWithinTime = Tasks.Where(x => x.CompletedDate >= DateTime.Now.AddDays(daysToConsider * -1) && x.Status == TodoStatus.Done)
             .Count();
 
-        return allCompletedWithinTime / Tasks.Count;
+        return allCompletedWithinTime / daysToConsider;
     }
 }

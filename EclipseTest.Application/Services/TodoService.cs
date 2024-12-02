@@ -60,4 +60,15 @@ public class TodoService : ITodoService
 
         await _todoRepository.UpdateAsync(todo);
     }
+
+    public async Task AddCommentToTodoAsync(CreateCommentDto dto)
+    {
+        Todo todo = await _todoRepository.FindAsync(x => x.Id == dto.Id);
+
+        if (todo is null)
+            throw new ArgumentException("This todo wasn't found on database");
+
+        todo.AddComment(dto.Comment);
+        await _todoRepository.UpdateAsync(todo);
+    }
 }

@@ -52,6 +52,24 @@ public class TodoController : ControllerBase
         }
     }
 
+    [HttpPost("create-comment")]
+    public async Task<IActionResult> AddCommentAsync([FromBody] CreateCommentDto dto)
+    {
+        try
+        {
+            await _service.AddCommentToTodoAsync(dto);
+            return StatusCode(201);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500);
+        }
+    }
+
     [HttpPut]
     public async Task<IActionResult> UpdateTodoAsync([FromBody] UpdateTodoDto dto)
     {

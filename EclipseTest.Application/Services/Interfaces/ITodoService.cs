@@ -7,6 +7,7 @@ public interface ITodoService
 {
     Task<IEnumerable<Todo>> GetAllProjectTodosAsync(int projectId);
     Task AddTodoToProjectAsync(CreateTodoDto dto);
+    Task AddCommentToTodoAsync(CreateCommentDto dto);
     Task UpdateTodoFromProjectAsync(UpdateTodoDto dto);
     Task RemoveTodoFromProjectAsync(int id);
 }

@@ -14,6 +14,7 @@ public class Todo : BaseEntity
     public Priority Priority { get; private set; }
     public User CreatedBy { get; private set; }
     public List<TodoHistory> History { get; private set; } = new();
+    public List<string> Comments { get; private set; } = new();
 
     public string Title 
     { 
@@ -118,5 +119,13 @@ public class Todo : BaseEntity
         {
             History.Add(taskHistory);
         }
+    }
+
+    public void AddComment(string comment)
+    {
+        if (string.IsNullOrWhiteSpace(comment))
+            throw new ArgumentException("Comment must not be empty");
+
+        Comments.Add(comment);
     }
 }
