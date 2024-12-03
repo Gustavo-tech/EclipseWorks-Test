@@ -1,5 +1,6 @@
 ﻿using EclipseTest.Application.Dto.Project;
 using EclipseTest.Application.Services.Interfaces;
+using EclipseTest.Domain.Enums;
 using EclipseTest.Domain.Models;
 using EclipseTest.Infrastructure.Interfaces;
 
@@ -49,10 +50,20 @@ public class ProjectService : IProjectService
         await _projectRepository.DeleteAsync(project);
     }
 
-    public async Task<double> GenerateProjectReportAsync(int projectId)
+    public async Task<double> GenerateProjectReportAsync(int projectId, int userId)
     {
         Project project = await _projectRepository.FindAsync(x => x.Id == projectId);
+        User user = await _userRepository.FindAsync(x => x.Id == userId);
 
-        return project is null ? throw new ArgumentException("Project not found on database") : project.GenerateAverageForCompletedTodos(30);
+        if (project is null)
+            throw new ArgumentException("Project not found on database");
+
+        if (user is null)
+            throw new ArgumentException("User not found!");
+
+        else if (user.Role != UserRole.Manager)
+            throw new ArgumentException("User doesn't have privileges to generate a report");
+
+        return project.GenerateAverageForCompletedTodos(30);
     }
 }

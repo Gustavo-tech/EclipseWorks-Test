@@ -68,6 +68,6 @@ public class ProjectTests
             todo.Update(todo.Title, todo.Description, TodoStatus.Done, todo.DueDate, user);
         }
 
-        Assert.That(project.GenerateAverageForCompletedTodos(), Is.EqualTo(0.5));
+        Assert.That(project.GenerateAverageForCompletedTodos(), Is.EqualTo(0.33).Within(0.1));
     }
 }

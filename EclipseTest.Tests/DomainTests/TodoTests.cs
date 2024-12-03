@@ -48,5 +48,27 @@ namespace EclipseTest.Tests.DomainTests
             Assert.IsTrue(history.Changes.Any(x => x.Contains("Pending") && x.Contains("Done")));
             Assert.IsTrue(history.Changes.Any(x => x.Contains(firstDueDate.ToString()) && x.Contains(newDueDate.ToString())));
         }
+
+        [Test]
+        public void AddComment_CommentIsEmpty_ThrowException()
+        {
+            User user = new("User");
+            DateTime firstDueDate = DateTime.Now.AddDays(10);
+            _todo = new("Title", "Description", firstDueDate, user);
+
+            Assert.That(() =>_todo.AddComment(""), Throws.Exception);
+        }
+
+        [Test]
+        public void AddComment_CommentIsValid_AddCommentToTodo()
+        {
+            User user = new("User");
+            DateTime firstDueDate = DateTime.Now.AddDays(10);
+            _todo = new("Title", "Description", firstDueDate, user);
+
+            _todo.AddComment("Some comment");
+
+            Assert.That(_todo.Comments.Count, Is.EqualTo(1));
+        }
     }
 }

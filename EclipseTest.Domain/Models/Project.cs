@@ -6,7 +6,7 @@ public class Project : BaseEntity
 {
     public string Title { get; set; }
     public User CreatedBy { get; set; }
-    public List<Todo> Tasks { get; private set; } = new();
+    public List<Todo> Tasks { get; set; } = new();
 
     public bool IsEmpty => Tasks.Count == 0;
 

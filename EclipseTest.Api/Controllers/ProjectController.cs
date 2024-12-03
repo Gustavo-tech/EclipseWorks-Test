@@ -50,15 +50,18 @@ public class ProjectController : ControllerBase
 		}
     }
 
-    [HttpGet("get-report/{id}")]
-    public async Task<IActionResult> GetProjectReportAsync([FromRoute] int? id)
+    [HttpGet("get-report")]
+    public async Task<IActionResult> GetProjectReportAsync([FromQuery] int? projectId, [FromQuery] int? userId)
     {
-        if (id == null)
-            return BadRequest("Specify a user to get the projects");
+        if (projectId == null)
+            return BadRequest("Specify a project to get the report");
+
+        if (userId == null)
+            return BadRequest("Specify a user to get the report");
 
         try
         {
-            double average = await _service.GenerateProjectReportAsync(id.Value);
+            double average = await _service.GenerateProjectReportAsync(projectId.Value, userId.Value);
             return Ok($"The average of tasks done for this project in the last 30 days is {average}");
         }
         catch (ArgumentException ex)
